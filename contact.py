@@ -9,3 +9,6 @@ class Contact:
         self.zip = zip
         self.phone_number = phone_number
         self.email = email
+    def __str__(self):
+        return self.first_name + " " + self.last_name + " " + self.address + " " + self.zip + " " + self.phone_number + " " + self.email + "\n"
+    
