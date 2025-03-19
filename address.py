@@ -28,8 +28,8 @@ class AddressBook:
         """Displays all contacts."""
         if not self.contacts:
             print("No contacts available.")
-            return
-        print("\nAddress Book Contacts:")
+        else:
+            print("\nAddress Book Contacts:")
         for contact in self.contacts:
             print(contact)
 
@@ -63,5 +63,3 @@ class AddressBook:
             return
 
          print("Contact not found!")
-
-

@@ -1,35 +1,66 @@
 from address import AddressBook
 from contact import Contact
 from validate import generate_user_data
+from addressbookmain import AddressBookMain
 
 def main():
     """Main function for Address Book system."""
-    address_book = AddressBook()
+    manager = AddressBookMain()
+    current_book = None
 
     while True:
-        print("\n Address Book Menu:")
-        print("1️ Add Contact")
-        print("2️ Show Contacts")
-        print("3️ Edit Contact")
-        print("4️ Delete Contact")
-        print("5️ Exit")
+        print("\nMain Menu:")
+        print("1. Create Address Book")
+        print("2. Select Address Book")
+        print("3. Delete Address Book")
+        print("4. Display Address Books")
+        print("5. Manage Contacts")
+        print("6. Exit")
 
         choice = input("Select an option: ")
 
         match choice:
             case "1":
-                address_book.add_contact()
+                manager.create_address_book(input("Enter Address Book Name: "))
             case "2":
-                address_book.display_contacts()
+                current_book = manager.select_address_book(input("Enter Address Book Name: "))
+                manage_contacts(current_book)
             case "3":
-                address_book.edit_contact()
+                manager.delete_address_book(input("Enter Address Book Name: "))
             case "4":
-                address_book.delete_contact()
+                manager.display_address_books()
             case "5":
-                print("Exiting Address Book. Goodbye!")
+                if current_book:
+                    manage_contacts(current_book)
+                else:
+                    print("No Address Book selected!")
+            case "6":
+                print("Goodbye!")
                 break
             case _:
-                print("Invalid option! Please select a valid choice.")
+                print("Invalid choice. Try again.")
+
+def manage_contacts(book):
+    """ Handles the contact use cases in the selected Address Book."""
+    while True:
+        print("\nContact Menu:")
+        print("1. Add Contact 2. Show Contacts 3. Edit Contact 4. Delete Contact 5. Back")
+
+        choice = input("Choose an option: ")
+
+        match choice:
+            case "1":
+                book.add_contact()
+            case "2":
+                book.display_contacts()
+            case "3":
+                book.edit_contact()
+            case "4":
+                book.delete_contact()
+            case "5":
+                break
+            case _:
+                print("Invalid choice. Try again.")
 
 if __name__ == "__main__":
     main()
