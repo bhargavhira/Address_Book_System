@@ -6,10 +6,18 @@ class AddressBook:
         self.contacts = []
 
     def add_contact(self):
+        first_name = input("Enter First Name: ")
+        last_name = input("Enter Last Name: ")
+        
+        #Duplicate check karega
+        for contact in self.contacts:
+            if contact.first_name.lower() == first_name.lower() and contact.last_name.lower() == last_name.lower():
+                print("Contact already exists! Duplicate entries are not allowed.")
+                return
         """Handles user input and adds a contact."""
         user_data = {
-            "first_name": input("Enter First Name: "),
-            "last_name": input("Enter Last Name: "),
+            "first_name": first_name,
+            "last_name": last_name,
             "address": input("Enter Address: "),
             "city": input("Enter City: "),
             "state": input("Enter State: "),
