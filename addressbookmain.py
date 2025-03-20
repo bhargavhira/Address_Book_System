@@ -44,3 +44,23 @@ class AddressBookMain:
                     found = True
         if not found:
             print("No contacts found in the given location.")
+
+    def view_person_by_location(self, location, search_type):
+
+        view_persons_by_location = {}
+
+        for book_name, book in self.books.items():
+            for contact in book.contacts:
+              if (search_type == "city" and contact.city.lower() == location.lower()) or \
+               (search_type == "state" and contact.state.lower() == location.lower()):
+                view_persons_by_location.setdefault(book_name, []).append(str(contact))
+
+        if view_persons_by_location:
+            print(f"\nPersons in {search_type.title()} '{location}':")
+            for book_name, contacts in view_persons_by_location.items():
+                print(f"\nAddress Book: {book_name}")
+                for contact in contacts:
+                    print(contact)
+        else:
+            print(f"No persons found in {search_type.title()} '{location}'.")  
+           

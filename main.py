@@ -16,7 +16,7 @@ def main():
         print("4. Display Address Books")
         print("5. Manage Contacts")
         print("6. Search Person by City/State")
-        print("7. Exit")
+        print("7. View Person by City/State")
 
         choice = input("Select an option: ")
 
@@ -41,10 +41,17 @@ def main():
 
             #search_person_by_location AdressBookMain m hai
             case "6":
-                search_type = input("Search by City or State? (city/state): ").strip().lower()
+                search_type = input("Search by (city/state): ").strip().lower()
                 location = input(f"Enter {search_type} name: ").strip()
-                manager.search_person_by_location(location, search_type)        
+                manager.search_person_by_location(location, search_type)
             case "7":
+                search_type = input("Search by (city/state): ").strip().lower()
+                location = input("Enter the (city/state): ").strip()
+                if search_type in ["city", "state"]:
+                    manager.view_person_by_location(location, search_type)
+                else:
+                    print("Invalid option! Choose 'city' or 'state'.")              
+            case "8":
                 print("Goodbye!")
                 break
             case _:
