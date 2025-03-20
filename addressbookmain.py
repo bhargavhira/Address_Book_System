@@ -32,3 +32,15 @@ class AddressBookMain:
             print("\nAvailable Address Books:")
             for name in self.books:
                 print(f"- {name}")
+                
+    def search_person_by_location(self, location, search_type):
+        """Search for a person in a city or state across multiple Address Books."""
+        found = False
+        for book_name, book in self.books.items():
+            for contact in book.contacts:
+                if (search_type == "city" and contact.city.lower() == location.lower()) or \
+                   (search_type == "state" and contact.state.lower() == location.lower()):
+                    print(f"Found in '{book_name}': {contact}")
+                    found = True
+        if not found:
+            print("No contacts found in the given location.")

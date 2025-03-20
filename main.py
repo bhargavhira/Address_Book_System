@@ -15,7 +15,8 @@ def main():
         print("3. Delete Address Book")
         print("4. Display Address Books")
         print("5. Manage Contacts")
-        print("6. Exit")
+        print("6. Search Person by City/State")
+        print("7. Exit")
 
         choice = input("Select an option: ")
 
@@ -24,7 +25,10 @@ def main():
                 manager.create_address_book(input("Enter Address Book Name: "))
             case "2":
                 current_book = manager.select_address_book(input("Enter Address Book Name: "))
-                manage_contacts(current_book)
+                if current_book:
+                    manage_contacts(current_book)
+                else:
+                    print("Address Book not found !")
             case "3":
                 manager.delete_address_book(input("Enter Address Book Name: "))
             case "4":
@@ -34,7 +38,13 @@ def main():
                     manage_contacts(current_book)
                 else:
                     print("No Address Book selected!")
+
+            #search_person_by_location AdressBookMain m hai
             case "6":
+                search_type = input("Search by City or State? (city/state): ").strip().lower()
+                location = input(f"Enter {search_type} name: ").strip()
+                manager.search_person_by_location(location, search_type)        
+            case "7":
                 print("Goodbye!")
                 break
             case _:
