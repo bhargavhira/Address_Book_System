@@ -72,7 +72,14 @@ class AddressBook:
 
          print("Contact not found!")
 
-    def sort_contacts(self):
-        self.contacts.sort(key=lambda contact: (contact.first_name.lower(), contact.last_name.lower()))
-        print("Contacts Sorted Successfully !")
+    def sort_contacts(self, sort_by):
+        valid_keys = {"city": "city", "state": "state", "zip": "zip_code"}
+
+        if sort_by not in valid_keys:
+            print("Invalid sort option! Choose from city, satte, or zip.")
+            return
+        
+        self.contacts.sort(key=lambda contact: getattr(contact, valid_keys[sort_by]).lower())
+        print(f"Contacts sorted by {sort_by}.")
+        
              

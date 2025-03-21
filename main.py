@@ -84,7 +84,11 @@ def manage_contacts(book):
             case "4":
                 book.delete_contact()
             case "5":
-                book.sort_contacts()    
+                sort_by = input("Sort by (City/State/Zip): ").strip().lower()
+                if sort_by in ["city", "state", "zip"]:
+                    book.sort_contacts(sort_by)
+                else:
+                    print("Invalid option! Choose city, state, or zip.")        
             case "6":
                 break
             case _:
