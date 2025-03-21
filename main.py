@@ -17,6 +17,8 @@ def main():
         print("5. Manage Contacts")
         print("6. Search Person by City/State")
         print("7. View Person by City/State")
+        print("8. Count Person by City/State")
+        print("9. Exit")
 
         choice = input("Select an option: ")
 
@@ -50,8 +52,15 @@ def main():
                 if search_type in ["city", "state"]:
                     manager.view_person_by_location(location, search_type)
                 else:
-                    print("Invalid option! Choose 'city' or 'state'.")              
+                    print("Invalid option! Choose 'city' or 'state'.")
             case "8":
+                search_type = input("Enter City or State: ").strip().lower()
+                location = input("Count by (city/state): ").strip()
+                if search_type in ["city", "state"]:
+                    manager.count_person_by_location(location, search_type)
+                else:
+                    print("Invalid option! Choose 'city' or 'state'.")                          
+            case "9":
                 print("Goodbye!")
                 break
             case _:

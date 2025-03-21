@@ -63,4 +63,22 @@ class AddressBookMain:
                     print(contact)
         else:
             print(f"No persons found in {search_type.title()} '{location}'.")  
-           
+    
+    def count_person_by_location(self, location, search_type):
+
+        count_by_location = {}
+
+        for book_name, book in self.books.items():
+            count = sum(1 for contact in book.contacts if
+                        (search_type == "city" and contact.city.lower() == location.lower()) or 
+                        (search_type == "state" and contact.state.lower() == location.lower()))
+            if count > 0:
+                count_by_location[book_name] = count
+
+        if count_by_location:
+            print(f"\nNumber of persons in {search_type.title()} '{location}':")
+            for book_name, count in count_by_location.items():
+                print(f"Address Book: {book_name} - {count} contact(s)")
+        else:
+            print(f"No persons found in {search_type.title()} '{location}'.")
+                            
