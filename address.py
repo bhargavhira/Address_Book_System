@@ -71,3 +71,8 @@ class AddressBook:
             return
 
          print("Contact not found!")
+
+    def sort_contacts(self):
+        self.contacts.sort(key=lambda contact: (contact.first_name.lower(), contact.last_name.lower()))
+        print("Contacts Sorted Successfully !")
+             

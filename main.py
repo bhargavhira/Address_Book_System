@@ -70,7 +70,7 @@ def manage_contacts(book):
     """ Handles the contact use cases in the selected Address Book."""
     while True:
         print("\nContact Menu:")
-        print("1. Add Contact 2. Show Contacts 3. Edit Contact 4. Delete Contact 5. Back")
+        print("1. Add Contact 2. Show Contacts 3. Edit Contact 4. Delete Contact 5. Sort Contacts Alphabetically 6. Back")
 
         choice = input("Choose an option: ")
 
@@ -84,6 +84,8 @@ def manage_contacts(book):
             case "4":
                 book.delete_contact()
             case "5":
+                book.sort_contacts()    
+            case "6":
                 break
             case _:
                 print("Invalid choice. Try again.")
