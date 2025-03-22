@@ -2,6 +2,15 @@ from address import AddressBook
 from contact import Contact
 from validate import generate_user_data
 from addressbookmain import AddressBookMain
+import os
+import csv
+import json
+
+CSV_DIRECTORY = "Data/csv"
+JSON_DIRECTORY = "Data/json"
+
+os.makedirs(CSV_DIRECTORY, exist_ok=True)
+os.makedirs(JSON_DIRECTORY, exist_ok=True)
 
 def main():
     """Main function for Address Book system."""
@@ -30,7 +39,7 @@ def main():
                 if current_book:
                     manage_contacts(current_book)
                 else:
-                    print("Address Book not found !")
+                    print("Address Book not found!")
             case "3":
                 manager.delete_address_book(input("Enter Address Book Name: "))
             case "4":
@@ -40,8 +49,6 @@ def main():
                     manage_contacts(current_book)
                 else:
                     print("No Address Book selected!")
-
-            #search_person_by_location AdressBookMain m hai
             case "6":
                 search_type = input("Search by (city/state): ").strip().lower()
                 location = input(f"Enter {search_type} name: ").strip()
@@ -59,15 +66,16 @@ def main():
                 if search_type in ["city", "state"]:
                     manager.count_person_by_location(location, search_type)
                 else:
-                    print("Invalid option! Choose 'city' or 'state'.")                          
+                    print("Invalid option! Choose 'city' or 'state'.")
             case "9":
-                print("Goodbye!")
+                manager.save_all_books_to_csv()
+                print("Address Books saved. Exiting...")
                 break
             case _:
                 print("Invalid choice. Try again.")
 
 def manage_contacts(book):
-    """ Handles the contact use cases in the selected Address Book."""
+    """Handles the contact use cases in the selected Address Book."""
     while True:
         print("\nContact Menu:")
         print("1. Add Contact 2. Show Contacts 3. Edit Contact 4. Delete Contact 5. Sort Contacts Alphabetically 6. Back")

@@ -1,20 +1,31 @@
+import os
+import csv
+import json
 from validate import validate_data
 from contact import Contact
 
+CSV_DIRECTORY = "Data/csv"
+JSON_DIRECTORY = "Data/json"
+
+os.makedirs(CSV_DIRECTORY, exist_ok=True)
+os.makedirs(JSON_DIRECTORY, exist_ok=True)
+
 class AddressBook:
-    def __init__(self):
+    def __init__(self, name=""):
         self.contacts = []
+        self.name = name
+        if name:
+            self.load_from_file()
 
     def add_contact(self):
         first_name = input("Enter First Name: ")
         last_name = input("Enter Last Name: ")
-        
-        #Duplicate check karega
+
         for contact in self.contacts:
             if contact.first_name.lower() == first_name.lower() and contact.last_name.lower() == last_name.lower():
                 print("Contact already exists! Duplicate entries are not allowed.")
                 return
-        """Handles user input and adds a contact."""
+
         user_data = {
             "first_name": first_name,
             "last_name": last_name,
@@ -30,19 +41,18 @@ class AddressBook:
         if validated_data:
             contact = Contact(**validated_data)
             self.contacts.append(contact)
+            self.save_to_file()
             print("Contact added successfully!")
 
     def display_contacts(self):
-        """Displays all contacts."""
         if not self.contacts:
             print("No contacts available.")
         else:
             print("\nAddress Book Contacts:")
-        for contact in self.contacts:
-            print(contact)
+            for contact in self.contacts:
+                print(contact)
 
     def edit_contact(self):
-        """Edits an existing contact."""
         search_name = input("Enter first name of the contact to edit: ").strip().lower()
         for contact in self.contacts:
             if contact.first_name.lower() == search_name:
@@ -58,6 +68,7 @@ class AddressBook:
                 for key, value in updated_data.items():
                     setattr(contact, key, value)
 
+                self.save_to_file()
                 print("Contact updated successfully!")
                 return
         print("Contact not found!")
@@ -65,21 +76,63 @@ class AddressBook:
     def delete_contact(self):
         name = input("Enter first name of the contact to delete: ").strip().lower()
         for contact in self.contacts:
-         if contact.first_name.lower() == name:
-            self.contacts.remove(contact)
-            print(f"Contact '{contact.first_name} {contact.last_name}' deleted successfully!")
-            return
+            if contact.first_name.lower() == name:
+                self.contacts.remove(contact)
+                self.save_to_file()
+                print(f"Contact '{contact.first_name} {contact.last_name}' deleted successfully!")
+                return
 
-         print("Contact not found!")
+        print("Contact not found!")
 
     def sort_contacts(self, sort_by):
         valid_keys = {"city": "city", "state": "state", "zip": "zip_code"}
 
         if sort_by not in valid_keys:
-            print("Invalid sort option! Choose from city, satte, or zip.")
+            print("Invalid sort option! Choose from city, state, or zip.")
             return
         
         self.contacts.sort(key=lambda contact: getattr(contact, valid_keys[sort_by]).lower())
         print(f"Contacts sorted by {sort_by}.")
-        
-             
+
+    def save_to_file(self):
+        if not self.name:
+            print("Error: Address Book name is not set.")
+            return
+
+        csv_path = os.path.join(CSV_DIRECTORY, f"{self.name}.csv")
+        json_path = os.path.join(JSON_DIRECTORY, f"{self.name}.json")
+
+        with open(csv_path, mode="w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["First Name", "Last Name", "Address", "City", "State", "Zip", "Phone", "Email"])
+            for contact in self.contacts:
+                writer.writerow([contact.first_name, contact.last_name, contact.address,
+                                 contact.city, contact.state, contact.zip_code,
+                                 contact.phone_number, contact.email])
+
+        with open(json_path, mode="w") as file:
+            json.dump([contact.__dict__ for contact in self.contacts], file, indent=4)
+
+    def load_from_file(self):
+        csv_path = os.path.join(CSV_DIRECTORY, f"{self.name}.csv")
+
+        if not os.path.exists(csv_path):
+            return
+
+        with open(csv_path, mode="r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                contact_data = {
+                    "first_name": row["First Name"],
+                    "last_name": row["Last Name"],
+                    "address": row["Address"],
+                    "city": row["City"],
+                    "state": row["State"],
+                    "zip_code": row["Zip"],
+                    "phone_number": row["Phone"],
+                    "email": row["Email"]
+                }
+                self.contacts.append(Contact(**contact_data))
+
+        print(f"Loaded {len(self.contacts)} contacts from {self.name}.csv")
+ 
